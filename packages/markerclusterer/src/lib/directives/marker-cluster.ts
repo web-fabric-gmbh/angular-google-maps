@@ -1,9 +1,21 @@
-import { Directive, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChange } from '@angular/core';
+import {
+  Directive,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChange,
+} from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
-import { InfoWindowManager, MarkerManager } from '@agm/core';
-import { ClusterIconStyle, MarkerClustererOptions } from '@google/markerclustererplus';
+import { InfoWindowManager, MarkerManager } from '@web-fabric-gmbh/agm-core';
+import {
+  ClusterIconStyle,
+  MarkerClustererOptions,
+} from '@google/markerclustererplus';
 import { Calculator } from '@google/markerclustererplus/dist/markerclusterer';
 import { ClusterManager } from '../services/managers/cluster-manager';
 
@@ -44,7 +56,9 @@ import { Component } from '@angular/core';
     InfoWindowManager,
   ],
 })
-export class AgmMarkerCluster implements OnDestroy, OnChanges, OnInit, MarkerClustererOptions {
+export class AgmMarkerCluster
+  implements OnDestroy, OnChanges, OnInit, MarkerClustererOptions
+{
   /**
    * The grid size of a cluster in pixels
    */
@@ -137,7 +151,7 @@ export class AgmMarkerCluster implements OnDestroy, OnChanges, OnInit, MarkerClu
 
   private _observableSubscriptions: Subscription[] = [];
 
-  constructor(private _clusterManager: ClusterManager) { }
+  constructor(private _clusterManager: ClusterManager) {}
 
   /** @internal */
   ngOnDestroy() {
@@ -191,7 +205,6 @@ export class AgmMarkerCluster implements OnDestroy, OnChanges, OnInit, MarkerClu
       this._clusterManager.setTitle(this);
     }
     // tslint:enable: no-string-literal
-
   }
 
   private _addEventListeners() {
@@ -202,7 +215,9 @@ export class AgmMarkerCluster implements OnDestroy, OnChanges, OnInit, MarkerClu
       },
     ];
     handlers.forEach((obj) => {
-      const os = this._clusterManager.createClusterEventObservable(obj.name).subscribe(obj.handler);
+      const os = this._clusterManager
+        .createClusterEventObservable(obj.name)
+        .subscribe(obj.handler);
       this._observableSubscriptions.push(os);
     });
   }

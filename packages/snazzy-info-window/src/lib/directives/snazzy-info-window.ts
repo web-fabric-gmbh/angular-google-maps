@@ -1,14 +1,39 @@
-import { AgmMarker, GoogleMapsAPIWrapper, MapsAPILoader, MarkerManager } from '@agm/core';
-import { AfterViewInit, Component, ContentChild, ElementRef, EventEmitter, Host, Input, OnChanges, OnDestroy, Optional, Output, SimpleChanges, SkipSelf, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
+import {
+  AgmMarker,
+  GoogleMapsAPIWrapper,
+  MapsAPILoader,
+  MarkerManager,
+} from '@web-fabric-gmbh/agm-core';
+import {
+  AfterViewInit,
+  Component,
+  ContentChild,
+  ElementRef,
+  EventEmitter,
+  Host,
+  Input,
+  OnChanges,
+  OnDestroy,
+  Optional,
+  Output,
+  SimpleChanges,
+  SkipSelf,
+  TemplateRef,
+  ViewChild,
+  ViewContainerRef,
+} from '@angular/core';
 
 declare var require: any;
 
 @Component({
   // tslint:disable-next-line:component-selector
   selector: 'agm-snazzy-info-window',
-  template: '<div #outerWrapper><div #viewContainer></div></div><ng-content></ng-content>',
+  template:
+    '<div #outerWrapper><div #viewContainer></div></div><ng-content></ng-content>',
 })
-export class AgmSnazzyInfoWindow implements AfterViewInit, OnDestroy, OnChanges {
+export class AgmSnazzyInfoWindow
+  implements AfterViewInit, OnDestroy, OnChanges
+{
   /**
    * The latitude and longitude where the info window is anchored.
    * The offset will default to 0px when using this option. Only required/used if you are not using a agm-marker.
@@ -60,7 +85,7 @@ export class AgmSnazzyInfoWindow implements AfterViewInit, OnDestroy, OnChanges 
    * A custom border around the info window. Set to false to completely remove the border.
    * The units used for border should be the same as pointer.
    */
-  @Input() border: {width: string; color: string} | boolean;
+  @Input() border: { width: string; color: string } | boolean;
 
   /**
    * A custom CSS border radius property to specify the rounded corners of the info window.
@@ -88,7 +113,16 @@ export class AgmSnazzyInfoWindow implements AfterViewInit, OnDestroy, OnChanges 
    * The CSS properties for the shadow of the info window.
    * Set to false to completely remove the shadow.
    */
-  @Input() shadow: boolean | {h?: string, v?: string, blur: string, spread: string, opacity: number, color: string};
+  @Input() shadow:
+    | boolean
+    | {
+        h?: string;
+        v?: string;
+        blur: string;
+        spread: string;
+        opacity: number;
+        color: string;
+      };
 
   /**
    * Determines if the info window will open when the marker is clicked.
@@ -137,17 +171,19 @@ export class AgmSnazzyInfoWindow implements AfterViewInit, OnDestroy, OnChanges 
   /**
    * @internal
    */
-  @ViewChild('outerWrapper', {read: ElementRef, static: false}) _outerWrapper: ElementRef;
+  @ViewChild('outerWrapper', { read: ElementRef, static: false })
+  _outerWrapper: ElementRef;
 
   /**
    * @internal
    */
-  @ViewChild('viewContainer', {read: ViewContainerRef, static: false}) _viewContainerRef: ViewContainerRef;
+  @ViewChild('viewContainer', { read: ViewContainerRef, static: false })
+  _viewContainerRef: ViewContainerRef;
 
   /**
    * @internal
    */
-  @ContentChild(TemplateRef, {static: false}) _templateRef: TemplateRef<any>;
+  @ContentChild(TemplateRef, { static: false }) _templateRef: TemplateRef<any>;
 
   protected _nativeSnazzyInfoWindow: any;
   protected _snazzyInfoWindowInitialized: Promise<any> | null = null;
@@ -156,7 +192,7 @@ export class AgmSnazzyInfoWindow implements AfterViewInit, OnDestroy, OnChanges 
     @Optional() @Host() @SkipSelf() private _marker: AgmMarker,
     private _wrapper: GoogleMapsAPIWrapper,
     private _manager: MarkerManager,
-    private _loader: MapsAPILoader,
+    private _loader: MapsAPILoader
   ) {}
 
   /**
@@ -171,7 +207,10 @@ export class AgmSnazzyInfoWindow implements AfterViewInit, OnDestroy, OnChanges 
     } else if ('isOpen' in changes && !this.isOpen) {
       this._closeInfoWindow();
     }
-    if (('latitude' in changes || 'longitude' in changes) && this._marker == null) {
+    if (
+      ('latitude' in changes || 'longitude' in changes) &&
+      this._marker == null
+    ) {
       this._updatePosition();
     }
   }
@@ -180,10 +219,16 @@ export class AgmSnazzyInfoWindow implements AfterViewInit, OnDestroy, OnChanges 
    * @internal
    */
   ngAfterViewInit() {
-    const m = this._manager != null ? this._manager.getNativeMarker(this._marker) : null;
-    this._snazzyInfoWindowInitialized = this._loader.load()
+    const m =
+      this._manager != null
+        ? this._manager.getNativeMarker(this._marker)
+        : null;
+    this._snazzyInfoWindowInitialized = this._loader
+      .load()
       .then(() => require('snazzy-info-window'))
-      .then((module: any) => Promise.all([module, m, this._wrapper.getNativeMap()]))
+      .then((module: any) =>
+        Promise.all([module, m, this._wrapper.getNativeMap()])
+      )
       .then((elems) => {
         const options: any = {
           map: elems[2],
@@ -229,9 +274,9 @@ export class AgmSnazzyInfoWindow implements AfterViewInit, OnDestroy, OnChanges 
         this._nativeSnazzyInfoWindow = new elems[0](options);
       });
     this._snazzyInfoWindowInitialized.then(() => {
-        if (this.isOpen) {
-          this._openInfoWindow();
-        }
+      if (this.isOpen) {
+        this._openInfoWindow();
+      }
     });
   }
 
@@ -271,7 +316,9 @@ export class AgmSnazzyInfoWindow implements AfterViewInit, OnDestroy, OnChanges 
    * Returns true when the Snazzy Info Window is initialized and open.
    */
   openStatus(): boolean {
-    return this._nativeSnazzyInfoWindow && this._nativeSnazzyInfoWindow.isOpen();
+    return (
+      this._nativeSnazzyInfoWindow && this._nativeSnazzyInfoWindow.isOpen()
+    );
   }
 
   /**

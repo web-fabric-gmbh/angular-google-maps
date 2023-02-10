@@ -15,7 +15,6 @@ Angular Google Maps (AGM) has an auto fit bounds feature, that adds all containi
 
 Let`s say we have a custom component, that extends the features of AGM:
 
-
 ```html
 <agm-map [fitBounds]="true">
   <my-custom-component></my-custom-component>
@@ -25,7 +24,7 @@ Let`s say we have a custom component, that extends the features of AGM:
 To add support the auto fit bounds feature for `<my-custom-component>`, we have to implement the `FitBoundsAccessor`:
 
 ```typescript
-import { FitBoundsAccessor, FitBoundsDetails } from '@agm/core';
+import { FitBoundsAccessor, FitBoundsDetails } from '@web-fabric-gmbh/agm-core';
 import { forwardRef, Component } from '@angular/core';
 
 @Component({

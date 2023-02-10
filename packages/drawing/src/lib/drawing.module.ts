@@ -1,4 +1,4 @@
-import { AgmCoreModule } from '@agm/core';
+import { AgmCoreModule } from '@web-fabric-gmbh/agm-core';
 import { NgModule } from '@angular/core';
 import { AgmDrawingManager } from './directives/drawing-manager';
 import { AgmDrawingManagerTrigger } from './directives/drawing-manager-trigger';
@@ -8,5 +8,4 @@ import { AgmDrawingManagerTrigger } from './directives/drawing-manager-trigger';
   declarations: [AgmDrawingManager, AgmDrawingManagerTrigger],
   exports: [AgmDrawingManager, AgmDrawingManagerTrigger],
 })
-export class AgmDrawingModule {
-}
+export class AgmDrawingModule {}

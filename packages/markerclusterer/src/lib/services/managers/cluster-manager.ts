@@ -1,4 +1,8 @@
-import { AgmMarker, GoogleMapsAPIWrapper, MarkerManager } from '@agm/core';
+import {
+  AgmMarker,
+  GoogleMapsAPIWrapper,
+  MarkerManager,
+} from '@web-fabric-gmbh/agm-core';
 import { Injectable, NgZone } from '@angular/core';
 import { MarkerClustererOptions } from '@google/markerclustererplus';
 import MarkerClusterer from '@google/markerclustererplus';
@@ -10,7 +14,10 @@ export class ClusterManager extends MarkerManager {
   private _clustererInstance: Promise<MarkerClusterer>;
   private _resolver: (cluster: MarkerClusterer) => void;
 
-  constructor(protected _mapsWrapper: GoogleMapsAPIWrapper, protected _zone: NgZone) {
+  constructor(
+    protected _mapsWrapper: GoogleMapsAPIWrapper,
+    protected _zone: NgZone
+  ) {
     super(_mapsWrapper, _zone);
     this._clustererInstance = new Promise<MarkerClusterer>((resolver) => {
       this._resolver = resolver;
@@ -18,7 +25,7 @@ export class ClusterManager extends MarkerManager {
   }
 
   init(options: MarkerClustererOptions): void {
-    this._mapsWrapper.getNativeMap().then(map => {
+    this._mapsWrapper.getNativeMap().then((map) => {
       const clusterer = new MarkerClusterer(map, [], options);
       this._resolver(clusterer);
     });
@@ -29,9 +36,10 @@ export class ClusterManager extends MarkerManager {
   }
 
   addMarker(markerDirective: AgmMarker): void {
-    const clusterPromise: Promise<MarkerClusterer> = this.getClustererInstance();
-    const markerPromise = this._mapsWrapper
-      .createMarker({
+    const clusterPromise: Promise<MarkerClusterer> =
+      this.getClustererInstance();
+    const markerPromise = this._mapsWrapper.createMarker(
+      {
         position: {
           lat: markerDirective.latitude,
           lng: markerDirective.longitude,
@@ -44,11 +52,13 @@ export class ClusterManager extends MarkerManager {
         zIndex: markerDirective.zIndex,
         title: markerDirective.title,
         clickable: markerDirective.clickable,
-      }, false);
+      },
+      false
+    );
 
-    Promise
-      .all([clusterPromise, markerPromise])
-      .then(([cluster, marker]) => cluster.addMarker(marker));
+    Promise.all([clusterPromise, markerPromise]).then(([cluster, marker]) =>
+      cluster.addMarker(marker)
+    );
     this._markers.set(markerDirective, markerPromise);
   }
 
@@ -61,7 +71,7 @@ export class ClusterManager extends MarkerManager {
     return markerPromise.then((m: google.maps.Marker) => {
       this._zone.run(() => {
         m.setMap(null);
-        this.getClustererInstance().then(cluster => {
+        this.getClustererInstance().then((cluster) => {
           cluster.removeMarker(m);
           this._markers.delete(marker);
         });
@@ -70,31 +80,31 @@ export class ClusterManager extends MarkerManager {
   }
 
   clearMarkers(): Promise<void> {
-    return this.getClustererInstance().then(cluster => {
+    return this.getClustererInstance().then((cluster) => {
       cluster.clearMarkers();
     });
   }
 
   setGridSize(c: AgmMarkerCluster): void {
-    this.getClustererInstance().then(cluster => {
+    this.getClustererInstance().then((cluster) => {
       cluster.setGridSize(c.gridSize);
     });
   }
 
   setMaxZoom(c: AgmMarkerCluster): void {
-    this.getClustererInstance().then(cluster => {
+    this.getClustererInstance().then((cluster) => {
       cluster.setMaxZoom(c.maxZoom);
     });
   }
 
   setStyles(c: AgmMarkerCluster): void {
-    this.getClustererInstance().then(cluster => {
+    this.getClustererInstance().then((cluster) => {
       cluster.setStyles(c.styles);
     });
   }
 
   setZoomOnClick(c: AgmMarkerCluster): void {
-    this.getClustererInstance().then(cluster => {
+    this.getClustererInstance().then((cluster) => {
       if (c.zoomOnClick !== undefined) {
         cluster.setZoomOnClick(c.zoomOnClick);
       }
@@ -102,7 +112,7 @@ export class ClusterManager extends MarkerManager {
   }
 
   setAverageCenter(c: AgmMarkerCluster): void {
-    this.getClustererInstance().then(cluster => {
+    this.getClustererInstance().then((cluster) => {
       if (c.averageCenter !== undefined) {
         cluster.setAverageCenter(c.averageCenter);
       }
@@ -110,7 +120,7 @@ export class ClusterManager extends MarkerManager {
   }
 
   setImagePath(c: AgmMarkerCluster): void {
-    this.getClustererInstance().then(cluster => {
+    this.getClustererInstance().then((cluster) => {
       if (c.imagePath !== undefined) {
         cluster.setImagePath(c.imagePath);
       }
@@ -118,7 +128,7 @@ export class ClusterManager extends MarkerManager {
   }
 
   setMinimumClusterSize(c: AgmMarkerCluster): void {
-    this.getClustererInstance().then(cluster => {
+    this.getClustererInstance().then((cluster) => {
       if (c.minimumClusterSize !== undefined) {
         cluster.setMinimumClusterSize(c.minimumClusterSize);
       }
@@ -126,7 +136,7 @@ export class ClusterManager extends MarkerManager {
   }
 
   setImageExtension(c: AgmMarkerCluster): void {
-    this.getClustererInstance().then(cluster => {
+    this.getClustererInstance().then((cluster) => {
       if (c.imageExtension !== undefined) {
         cluster.setImageExtension(c.imageExtension);
       }
@@ -137,14 +147,16 @@ export class ClusterManager extends MarkerManager {
     return new Observable((subscriber: Subscriber<T>) => {
       this._zone.runOutsideAngular(() => {
         this._clustererInstance.then((m: MarkerClusterer) => {
-          m.addListener(eventName, (e: T) => this._zone.run(() => subscriber.next(e)));
+          m.addListener(eventName, (e: T) =>
+            this._zone.run(() => subscriber.next(e))
+          );
         });
       });
     });
   }
 
   setCalculator(c: AgmMarkerCluster): void {
-    this.getClustererInstance().then(cluster => {
+    this.getClustererInstance().then((cluster) => {
       if (typeof c.calculator === 'function') {
         cluster.setCalculator(c.calculator);
       }

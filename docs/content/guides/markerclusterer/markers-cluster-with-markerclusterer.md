@@ -4,13 +4,14 @@ draft = false
 title = "Markers cluster with Marker Clusterer – A Google Maps JavaScript API utility library"
 +++
 
-Angular Google Maps provides a package that allows you to use [markerclustererplus](https://github.com/googlemaps/v3-utility-library/tree/master/markerclustererplus) together with @agm/core. 'Marker Clustererc' allows you to create and manage per-zoom-level clusters for large amounts of markers.
+Angular Google Maps provides a package that allows you to use [markerclustererplus](https://github.com/googlemaps/v3-utility-library/tree/master/markerclustererplus) together with @web-fabric-gmbh/agm-core. 'Marker Clustererc' allows you to create and manage per-zoom-level clusters for large amounts of markers.
 
 ## Install the needed packages
+
 First make sure that you install the following NPM packages:
 
 ```bash
-npm install @agm/core @agm/markerclusterer @google/markerclustererplus
+npm install @web-fabric-gmbh/agm-core @agm/markerclusterer @google/markerclustererplus
 ```
 
 Remember to add `--save` if you want npm to store the package in your packaje.json
@@ -22,7 +23,11 @@ Make sure you have a Google Maps API Key - [you can get one here](https://develo
 If you want to use default icons, you must add the following entry to the asset's property array (`projects/<yourproject>/architect/build/options/assets`) in angular.json:
 
 ```json
-{"input": "./node_modules/@google/markerclustererplus/images", "glob": "*", "output": "/images"}
+{
+  "input": "./node_modules/@google/markerclustererplus/images",
+  "glob": "*",
+  "output": "/images"
+}
 ```
 
 ## Loading the modules
@@ -30,34 +35,36 @@ If you want to use default icons, you must add the following entry to the asset'
 Update your root component (e.g. src/app/app.module.ts) and import the following modules:
 
 ```typescript
-import { AgmCoreModule } from '@agm/core';
-import { AgmMarkerClustererModule } from '@agm/markerclusterer';
+import { AgmCoreModule } from "@web-fabric-gmbh/agm-core";
+import { AgmMarkerClustererModule } from "@agm/markerclusterer";
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     AgmCoreModule.forRoot({
-      apiKey: ['YOUR_API_KEY_HERE']
+      apiKey: ["YOUR_API_KEY_HERE"],
     }),
-    AgmMarkerClustererModule
+    AgmMarkerClustererModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
 ```
 
 ## Using the directive
 
-When you import the `AgmMarkerClustererModule`, you can use the `agmMarkerCluster` directive  in your template. 
+When you import the `AgmMarkerClustererModule`, you can use the `agmMarkerCluster` directive in your template.
 
 ```html
 <agm-map style="height: 300px" [latitude]="51.673858" [longitude]="7.815982">
   <agm-marker-cluster>
-    <agm-marker *ngFor="let marker of markers" [latitude]="marker.latitude" [longitude]="marker.longitude"></agm-marker>
+    <agm-marker
+      *ngFor="let marker of markers"
+      [latitude]="marker.latitude"
+      [longitude]="marker.longitude"
+    ></agm-marker>
   </agm-marker-cluster>
 </agm-map>
 ```
@@ -69,7 +76,11 @@ If you want to control how the cluster style is calculated, you can pass in a `C
 ```html
 <agm-map [latitude]="0" [longitude]="0">
   <agm-marker-cluster [calculator]="myCalculatorFn">
-    <agm-marker *ngFor="let marker of markers" [latitude]="marker.latitude" [longitude]="marker.longitude"></agm-marker>
+    <agm-marker
+      *ngFor="let marker of markers"
+      [latitude]="marker.latitude"
+      [longitude]="marker.longitude"
+    ></agm-marker>
   </agm-marker-cluster>
 </agm-map>
 ```
