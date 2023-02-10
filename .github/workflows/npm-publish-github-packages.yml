@@ -28,6 +28,7 @@ jobs:
         with:
           token: ${{secrets.GITHUB_TOKEN}}
           registry: "https://npm.pkg.github.com"
+          package: ./dist/core/package.json
           check-version: true
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
