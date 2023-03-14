@@ -1,6 +1,6 @@
 {
   "name": "@web-fabric-gmbh/agm-core",
-  "version": "3.0.0-beta.1",
+  "version": "13.0.0",
   "description": "Angular components for Google Maps",
   "author": "Sebastian Holstein <info@sebastian-holstein.de>",
   "license": "MIT",
@@ -28,7 +28,7 @@
     "tslib": "^2.5.0"
   },
   "devDependencies": {
-    "@types/googlemaps": "^3.39.8",
+    "@types/googlemaps": "3.39.12",
     "@types/jest": "^26.0.3",
     "jest": "^26.1.0",
     "jest-preset-angular": "^8.2.1"
